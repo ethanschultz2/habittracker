@@ -1,0 +1,1 @@
+Fullstack Web App that tracks my daily habit goals in an effort to optimize my life. Backend is Spring Boot that uses JWT for login verification and a postgreSQL database to store users and their habits and information. Frontend is done in react for a dynamic, interactive and clean UI. 
