@@ -73,7 +73,7 @@ public class HabitService {
      }
      // Deleting a habit.
      @Transactional
-     void deleteHabit(String name){
-        habitRepository.deleteByName(name);
+     void deleteHabit(Habit habit){
+        habitRepository.delete(habit);
      }
 }

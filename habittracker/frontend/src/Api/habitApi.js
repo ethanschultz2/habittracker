@@ -3,9 +3,29 @@ const BASE_URL = "http://localhost:8080/api";
 
 //getting habits by username
 export async function getHabitsByUsername(username){
-    const res = await fetch(`${BASE_URL}/user/${username}/habits`);
-    if(!res.ok)throw new Error("Failed to fetch habits");
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${BASE_URL}/habit/user/${username}/habits`, {
+        headers: { 
+            "Authorization": `Bearer ${token}`,
+        }
+    });
+    if(!res.ok) throw new Error("Failed to fetch habits");
     return res.json();
+}
+//deleting habit by habit name
+export async function deleteHabit(name){
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${BASE_URL}/habit/delete/${encodeURIComponent(name)}`, {
+        method: 'DELETE',
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    if(!res.ok){
+        const errorText = await res.text();
+        throw new Error(`HTTP ${res.status}: ${errorText}`);
+    }
+    alert("Successfully deleted habit" + name);
 }
 //creating habit
 export async function createHabit(habit){
