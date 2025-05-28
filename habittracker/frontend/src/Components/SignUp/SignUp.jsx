@@ -1,8 +1,47 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import './SignUp.scss';
+import { useState } from 'react';
 
 const SignUp = () =>{
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+
+  const handleSignup = async(e) => {
+    e.preventDefault();
+    try {
+        const response = await fetch('http://localhost:8080/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username,
+                email,
+                password,
+            }),
+            credentials: 'include', 
+        });
+
+        if (!response.ok) {
+            const errorData = await response.text();
+            alert("Signup failed: " + errorData);
+            return;
+        }
+
+        const user = await response.json();
+        alert("Signup successful");
+        navigate("/verify");
+    } catch (error) {
+        console.error("Error during signup", error);
+        alert("Something went wrong in signup: " + error.message);
+    }
+};
+
+
      return (
     <div className="wrapper-signUp">
       <div className="illustration">
@@ -10,14 +49,24 @@ const SignUp = () =>{
       </div>
       <div className="form">
         <div className="heading">CREATE AN ACCOUNT</div>
-        <form>
+        <form onSubmit={handleSignup}>
           <div>
             <label htmlFor="name">Name</label>
-            <input type="text" id="name" placeholder="Enter your name" required/>
+            <input type="text" 
+            id="name" 
+            placeholder="Enter your name"  
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required/>
           </div>
           <div>
-            <label htmlFor="name">E-Mail</label>
-            <input type="text" id="name" placeholder="Enter your mail" required/>
+            <label htmlFor="email">E-Mail</label>
+            <input type="text" 
+            id="email" 
+            placeholder="Enter your mail" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required/>
           </div>
           <div>
             <label htmlFor="password">Password</label>
@@ -25,6 +74,8 @@ const SignUp = () =>{
               type="password"
               id="password"
               placeholder="Enter you password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>

@@ -7,6 +7,11 @@ const Home = () => {
             <h1>Welcome to Habit Tracker</h1>
             <h2> Sign up to start tracking</h2>
             <Link to={"/signUp"} className='button-link'> Sign Up</Link>
+            <h1 className='divider'>Or</h1>
+            <h2>
+                Login if you already have an account
+            </h2>
+            <Link to={"/login"} className='button-link'>Login</Link>
         </div>
     )
 }

@@ -51,7 +51,7 @@ public class User implements UserDetails{
         this.password = password;
         this.email = email;
         this.isActive = isActive;
-        this.habits = habits;
+        setHabits(habits);
         this.enabled = false;
     }
 
@@ -77,7 +77,10 @@ public class User implements UserDetails{
         return habits;
     }
     public void setHabits(List<Habit> habits) {
-        this.habits = habits;
+        this.habits.clear();
+        if (habits != null) {
+            this.habits.addAll(habits);
+        }
     }
     //Getters and setters 
     public String getUsername() {

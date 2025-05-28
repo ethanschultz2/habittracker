@@ -1,22 +1,18 @@
 package com.ethan.habittracker.habittracker.dtos;
 
-import java.time.Duration;
-
 public class HabitDto {
     private Long id;
     private String name;
     private String description;
     private int frequency;
-
-    private Duration duration;
-
+    private String duration;
     private String username;
 
     public HabitDto(){
 
     }
 
-    public HabitDto(Long id, String name, String description, int frequency, Duration duration, String username) {
+    public HabitDto(Long id, String name, String description, int frequency, String duration, String username) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -65,11 +61,11 @@ public class HabitDto {
         this.frequency = frequency;
     }
 
-    public Duration getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(Duration duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 }

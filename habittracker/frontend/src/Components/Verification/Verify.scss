@@ -1,0 +1,48 @@
+
+.wrapper-verification{
+    display: flex;
+    flex-direction: column;
+    height: 100vh; // full viewport height
+    background-color: #f0ffff;
+}
+.verify-title {
+  padding-left: 150px;
+  margin-top: 30px;
+  font-size: 2.5em;
+  font-weight: bold;
+}
+.content{
+    margin-top: 125px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input {
+  width: 50vh;
+  margin: 10px 0;
+  text-align: center;
+}
+::placeholder{
+    text-align: center;
+}
+.submitter {
+  margin-top: 20px;
+  border: solid 2px #bce0fd;
+  border-radius: 5px;
+  padding: 10px 60px;
+  color: black;
+  font-size: 20px;
+  font-weight: 900;
+  background-color: #f0ffff;
+}
+
+.submitter:hover{
+    filter: brightness(80%);
+}

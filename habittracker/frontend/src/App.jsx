@@ -6,6 +6,7 @@ import Home from "../src/Components/Home/Home";
 import HabitForm from "../src/Components/HabitForm/HabitForm";
 import SignUp from "../src/Components/SignUp/SignUp";
 import Login from "../src/Components/Login/Login";
+import Verify from "../src/Components/Verification/Verify";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
           <Route path='/form' element={<HabitForm/>}/>
           <Route path='/signUp' element={<SignUp/>}/>
           <Route path='/login' element={<Login/>}/>
+          <Route path='/verify' element={<Verify/>}/>
         </Routes>
       </Router>
     </>

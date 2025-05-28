@@ -21,7 +21,7 @@ public class Habit {
     private int frequency;
 
     @Column(name = "duration")
-    private Duration duration;
+    private String duration;
 
     @ManyToOne
     @JoinColumn(name = "username", referencedColumnName = "username")
@@ -30,7 +30,7 @@ public class Habit {
     public Habit(){
 
     }
-    public Habit(Long id, String name, String description, int frequency, Duration duration){
+    public Habit(Long id, String name, String description, int frequency, String duration){
         this.id = id;
         this.name = name;
         this.description = description;
@@ -49,10 +49,10 @@ public class Habit {
     public void setFrequency(int frequency) {
         this.frequency = frequency;
     }
-    public Duration getDuration() {
+    public String getDuration() {
         return duration;
     }
-    public void setDuration(Duration duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
     public String getName() {

@@ -5,21 +5,19 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
+import com.ethan.habittracker.habittracker.Entities.User;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-@Component
+@Service
 public class JwtService {
 
     @Value("${app.jwt.secret}")
@@ -46,19 +44,25 @@ public class JwtService {
             UserDetails userDetails,
             long expiration
     ) {
+        // Cast to User to access email
+        User user = (User) userDetails;
+        System.out.println("Building JWT token for email: " + user.getEmail());
+        
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(user.getEmail()) // Use EMAIL instead of username
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // Extract username from JWT token
+    // Extract username from JWT token (actually extracts email now)
     public String extractUsername(String token) {
-        return extractAllClaims(token).getSubject();
+        String email = extractAllClaims(token).getSubject();
+        System.out.println("Extracted email from token: " + email);
+        return email;
     }
 
     private Claims extractAllClaims(String token) {
@@ -77,8 +81,12 @@ public class JwtService {
 
     // Validate if JWT token is correct
     public boolean isTokenValid(String token, UserDetails userDetails) {
-       final String username = extractUsername(token);
-       return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        final String emailFromToken = extractUsername(token); // This is actually email
+        User user = (User) userDetails;
+        boolean isValid = (emailFromToken.equals(user.getEmail()) && !isTokenExpired(token));
+        System.out.println("Token validation - Email from token: " + emailFromToken + 
+                          ", User email: " + user.getEmail() + ", Valid: " + isValid);
+        return isValid;
     }
 
     private Date extractExpiration(String token) {

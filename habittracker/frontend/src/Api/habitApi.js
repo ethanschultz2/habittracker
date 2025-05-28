@@ -9,11 +9,26 @@ export async function getHabitsByUsername(username){
 }
 //creating habit
 export async function createHabit(habit){
+    const token = localStorage.getItem("token");
+    console.log("Sending habit data", habit);
     const res = await fetch(`${BASE_URL}/habit/create`,{
         method: "POST",
-        headers: { "Content-Type": "application/json"},
-        body: JSON.stringify({habit}),
+        headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(habit),
     });
     if(!res.ok)throw new Error("Failed to create habit");
-    return res.json();
+
+    const contentType = res.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/json")) {
+        const data = await res.json();
+        alert(habit);
+        console.log(data);
+        return data;
+    } else {
+        throw new Error("Server returned non-JSON response");
+    }
 }

@@ -1,8 +1,8 @@
 .navbar{
     max-width: 100%;
     margin: auto;
-    background-color: rgba(150, 157, 160, 0.938);
-    display: flex;
+    background-color: #1f2022;   
+    border-radius: 2px; 
     justify-content: center;
     padding: 2rem 1rem;
     z-index: 1;
@@ -30,10 +30,10 @@
 }
 .navbar-text{
     display: none;
-  margin-top: 5px;
-  font-size: 1.25rem;
-  color: white;
-  text-align: center;
+    margin-top: 5px;
+    font-size:  17px;
+    color: #f0ffff;
+    text-align: center;
 }
 .nav-link{  
     position: relative;
@@ -45,8 +45,8 @@
 }
 
 .navbar-li:hover .navbar-text{
-    background-color: black;
     display: block;
+    margin-top: 10px;
 }
 
 .navbar-icon{

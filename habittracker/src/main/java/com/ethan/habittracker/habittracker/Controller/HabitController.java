@@ -1,6 +1,7 @@
 package com.ethan.habittracker.habittracker.Controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,14 +55,23 @@ public class HabitController {
     public ResponseEntity<HabitDto> createHabit(@RequestBody HabitDto habitDto){
         Optional<User> userOptional = userRepository.findByUsername(habitDto.getUsername());
 
+        System.out.println("=== HABIT CREATION REQUEST ===");
+        System.out.println("Received HabitDto: " + habitDto);
+        System.out.println("Username: " + habitDto.getUsername());
+        System.out.println("Name: " + habitDto.getName());
+        System.out.println("Description: " + habitDto.getDescription());
+        System.out.println("Frequency: " + habitDto.getFrequency());
+        System.out.println("Duration: " + habitDto.getDuration());
+
+
         if(userOptional.isEmpty()){
-            return ResponseEntity.badRequest().build();//if user not found 400
+            return ResponseEntity.badRequest().body(new HabitDto());
         }
 
-        User  user = userOptional.get();
+        User user = userOptional.get();
 
         Habit habit = new Habit();
-            habit.setId(habitDto.getId());
+            // habit.setId(habitDto.getId());
             habit.setName(habitDto.getName());
             habit.setDescription(habitDto.getDescription());
             habit.setFrequency(habitDto.getFrequency());
@@ -77,6 +87,8 @@ public class HabitController {
             savedHabit.getFrequency(), 
             savedHabit.getDuration(), 
             user.getUsername());
+
+        System.out.println("Returning response: " + responsDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responsDto);
     }
     //toDo PutmappingUpdating a habit.
