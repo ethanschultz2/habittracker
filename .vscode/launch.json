@@ -16,7 +16,7 @@
             "request": "launch",
             "mainClass": "com.ethan.habittracker.habittracker.HabittrackerApplication",
             "projectName": "habittracker",
-            // "envFile": "${workspaceFolder}/.env",
+            "envFile": "${workspaceFolder}/.env",
         }
     ]
 }
