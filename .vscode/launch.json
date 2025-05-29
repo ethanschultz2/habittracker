@@ -8,7 +8,7 @@
             "type": "java",
             "name": "Current File",
             "request": "launch",
-            "mainClass": "${file}",
+            "mainClass": "${file}"
         },
         {
             "type": "java",
@@ -16,15 +16,7 @@
             "request": "launch",
             "mainClass": "com.ethan.habittracker.habittracker.HabittrackerApplication",
             "projectName": "habittracker",
-            "env":{
-                "USERNAME": "habituser",
-                "PASSWORD": "Misty&2001!",
-                "JWT_SECRET": "e7cb4c0c4f2bb04b7fcd849a5b64952e6d9e0a014b6224511e8b29c2d03a2c3d",
-                "JWT_EXPIRATION": "3600000",
-                "HOST_MAIL": "smtp.gmail.com",
-                "MAIL_USERNAME": "schultzethan34@gmail.com",
-                "MAIL_PASSWORD": "ykyu fcuf eack wkzj"
-            }
+            // "envFile": "${workspaceFolder}/.env",
         }
     ]
 }
