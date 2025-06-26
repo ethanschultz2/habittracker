@@ -8,6 +8,8 @@ import SignUp from "../src/Components/SignUp/SignUp";
 import Login from "../src/Components/Login/Login";
 import Verify from "../src/Components/Verification/Verify";
 import HabitList from "../src/Components/HabitList/HabitList";
+import Schedule from '../src/Components/Schedule/Schedule';
+import HabitChart from './Components/HabitChart/Habitchart';
 
 function App() {
 
@@ -22,6 +24,8 @@ function App() {
           <Route path='/login' element={<Login/>}/>
           <Route path='/verify' element={<Verify/>}/>
           <Route path='/list' element={<HabitList/>}/>
+          <Route path='/schedule' element={<Schedule/>}/>
+          <Route path='/chart' element={<HabitChart/>}/>
         </Routes>
       </Router>
     </>

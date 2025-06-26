@@ -12,10 +12,10 @@ export async function getHabitsByUsername(username){
     if(!res.ok) throw new Error("Failed to fetch habits");
     return res.json();
 }
-//deleting habit by habit name
-export async function deleteHabit(name){
+//deleting habit by habit id
+export async function deleteHabitById(id){
     const token = localStorage.getItem("token");
-    const res = await fetch(`${BASE_URL}/habit/delete/${encodeURIComponent(name)}`, {
+    const res = await fetch(`${BASE_URL}/habit/delete/${id}`, {
         method: 'DELETE',
         headers: {
             "Authorization": `Bearer ${token}`
@@ -25,7 +25,6 @@ export async function deleteHabit(name){
         const errorText = await res.text();
         throw new Error(`HTTP ${res.status}: ${errorText}`);
     }
-    alert("Successfully deleted habit" + name);
 }
 //creating habit
 export async function createHabit(habit){

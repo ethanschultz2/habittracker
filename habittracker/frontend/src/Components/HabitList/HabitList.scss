@@ -10,10 +10,10 @@
     }
     h2{
         text-align:center;
-        font-size: 2.25em;
         padding-right: 275px;
         width: 100%;
-        font-weight: 700;
+        font-size: 2.5em;
+        font-weight: 900;
     }
 
     .items{
@@ -33,6 +33,7 @@
         min-width: 18vw;
         border: 3px solid #bce0fd;
         font-weight: 700;
+        font-size: 1.2em;
         border-radius: 2px;
     }
     td:hover{
@@ -42,10 +43,11 @@
         filter: brightness(90%);
     }
     .clicker{
-        border-radius: 2px;
-        border-color: #1c2841;
-        font-weight: 900;
-        color: #1c2841;
-        background-color: #bce0fd;
+            border-radius: 2px;
+            border-color: #1c2841;
+            font-weight: 900;
+            font-size: 1.0em;
+            color: #1c2841;
+            background-color: #bce0fd;
     }
 }

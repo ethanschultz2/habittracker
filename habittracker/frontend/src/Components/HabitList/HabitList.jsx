@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { getHabitsByUsername, deleteHabit } from '../../Api/habitApi.js';
+import { getHabitsByUsername, deleteHabitById } from '../../Api/habitApi.js';
 import './HabitList.scss';
 const HabitList = () =>{
     const [habits, setHabits] = useState([]);
@@ -10,7 +10,6 @@ const HabitList = () =>{
                 try{
                     const usersName = localStorage.getItem("username");
                     const res = await getHabitsByUsername(usersName);
-                    console.log(res);
                     setHabits(res);
                 }catch(error){
                     console.log(error);
@@ -19,18 +18,17 @@ const HabitList = () =>{
                 fetchHabits();
             }, []);
 
-        const handleDelete = async (index) => {
-            const habitToDelete = habits[index];
+        const handleDelete = async (id) => {
             try{
-                await deleteHabit(habitToDelete.name);
-                setHabits(habits.filter((_, i) => i !== index));
+                await deleteHabitById(id);
+                setHabits(habits.filter((habit) => habit.id !== id));
             }catch(error){
                 console.log("Failed to delete", error);
             }
         };
 
 
-        const tableRows = habits.map((habit, index) => {
+        const tableRows = habits.map((habit) => {
             return(
                 <tr key={habit.id} className='items'>
                     <td>{habit.description}</td>
@@ -38,7 +36,7 @@ const HabitList = () =>{
                     <td>{habit.frequency}</td>
                     <td>{habit.name}</td>
                     <td>
-                        <button className='clicker' onClick={() => handleDelete(index)}> Delete </button>
+                        <button className='clicker' onClick={() => handleDelete(habit.id)}> Delete </button>
                     </td>
                 </tr>
             );

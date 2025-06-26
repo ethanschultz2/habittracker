@@ -3,18 +3,19 @@ h1 {
     font-size: 3.2em;
     color: #121313;
     line-height: 1.1;
+    font-weight: 900;
   }
   .background {
     background-image: url('../../images/HomeBackground.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    background-attachment: fixed;
-    height: 100vh; 
+    background-attachment: scroll;
+    min-height: 100vh; 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding-top: 150px;
+    padding-top: 70px;
     align-items: center;
     opacity: .95;
   }
@@ -23,7 +24,9 @@ h1 {
   }
 
   h2{
-    margin: 20px 10px 20px 300px;
+    font-weight: 900;
+    font-size: 2.5em;
+    margin: 70px 10px 20px 300px;
     color: #121313;
   }
   
@@ -47,3 +50,16 @@ h1 {
     background-color: #f0ffff;
     color: #121313;
   }
+  @media (max-width: 768px) {
+  .background {
+    padding-top: 100px; 
+    padding-right:100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .background {
+    padding-top: 120px; 
+    padding-right:120px;
+  }
+}

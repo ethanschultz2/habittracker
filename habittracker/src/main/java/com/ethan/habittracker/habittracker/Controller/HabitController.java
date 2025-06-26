@@ -91,10 +91,10 @@ public class HabitController {
     //toDo Putmapping Updating a habit.
 
     //toDo DeleteMappingDeleting a habit.
-    @DeleteMapping("/delete/{name}")
+    @DeleteMapping("/delete/{id}")
     @Transactional  // Add this annotation
-    public ResponseEntity<Void> deleteHabit(@PathVariable String name){
-        Optional<Habit> habit = habitRepository.findByName(name);
+    public ResponseEntity<Void> deleteHabit(@PathVariable Long id){
+        Optional<Habit> habit = habitRepository.findById(id);
         if(habit.isPresent()){
             this.habitRepository.delete(habit.get());
             return ResponseEntity.ok().build();

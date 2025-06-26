@@ -1,0 +1,26 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; // full viewport height
+    background-color: #f0ffff;
+}
+.chart-container{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+    height:75vh;
+    min-width: 50vw;
+}
+.chart-container h2 {
+    padding-right: 300px;
+    margin-bottom: 1rem;
+}
+
+.chart-container canvas {
+  flex: 1; /* canvas will grow to fill remaining space */
+  width: 100%;
+  height: 100%;
+}
