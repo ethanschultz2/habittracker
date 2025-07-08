@@ -20,6 +20,14 @@
         min-width: 33rem;
         text-align: center;
     }
+    .checkbox-group{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0px;
+        padding: 0px;
+    }
     .container {
         min-height: 15vh;
         margin-top: 10px;
@@ -30,11 +38,12 @@
     }
 
     table, th, td{
-        min-width: 18vw;
+        min-width: 15vw;
         border: 3px solid #bce0fd;
+        border-radius: 2px;
         font-weight: 700;
         font-size: 1.2em;
-        border-radius: 2px;
+        color: #1c2841;
     }
     td:hover{
         filter: brightness(90%);
@@ -50,4 +59,22 @@
             color: #1c2841;
             background-color: #bce0fd;
     }
+    .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1px;
+    max-width: 100px;
+    margin:auto;
+    word-break: break-word;
+
+    label {
+      font-weight: 700;
+      font-size: 1.0em;
+      align-items: center;
+      justify-content: center;
+      color: #1c2841;
+    }
+  }
 }

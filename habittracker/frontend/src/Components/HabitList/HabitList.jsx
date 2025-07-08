@@ -4,6 +4,7 @@ import { getHabitsByUsername, deleteHabitById } from '../../Api/habitApi.js';
 import './HabitList.scss';
 const HabitList = () =>{
     const [habits, setHabits] = useState([]);
+    const [radioStatus, setRadioStatus] = useState({});
 
         useEffect(() => {
                 const fetchHabits = async () =>{
@@ -26,7 +27,14 @@ const HabitList = () =>{
                 console.log("Failed to delete", error);
             }
         };
+        const handleStatusChange = (id, status) => {
+            setRadioStatus((prev) => ({ ...prev, [id]: status }));
 
+            if(status === 'completed'){
+                // Handle completed status if complete delete from backend 
+                handleDelete(id);
+            }
+        };
 
         const tableRows = habits.map((habit) => {
             return(
@@ -35,6 +43,40 @@ const HabitList = () =>{
                     <td>{habit.duration}</td>
                     <td>{habit.frequency}</td>
                     <td>{habit.name}</td>
+                    <td>
+                        <div className='checkbox-group'>
+                            <label>
+                                <input                             
+                                type="radio"
+                                name={`status-${habit.id}`}
+                                value="completed"
+                                checked={radioStatus[habit.id] === 'completed'}
+                                onChange={() => handleStatusChange(habit.id,'completed')}
+                                />
+                                Completed
+                            </label>
+                            <label>
+                                <input
+                                type="radio"
+                                name={`status-${habit.id}`}
+                                value="in-progress"
+                                checked={radioStatus[habit.id] === 'in-progress'}
+                                onChange={() => handleStatusChange(habit.id, 'in-progress')}
+                                />
+                                In Progress
+                            </label>
+                            <label>
+                                <input
+                                type="radio"
+                                name={`status-${habit.id}`}
+                                value="not-started"
+                                checked={radioStatus[habit.id] === 'not-started'}
+                                onChange={() => handleStatusChange(habit.id, 'not-started')}
+                                />
+                                Not Started
+                            </label>
+                        </div>
+                    </td>
                     <td>
                         <button className='clicker' onClick={() => handleDelete(habit.id)}> Delete </button>
                     </td>
@@ -54,6 +96,7 @@ const HabitList = () =>{
                                 <th>Time spent doing </th>
                                 <th> Times a week </th>
                                 <th> Habit Name </th>
+                                <th> Status </th>
                                 <th> Delete Habit</th>
                             </tr>
                             </thead>

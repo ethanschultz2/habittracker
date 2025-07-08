@@ -4,7 +4,7 @@ import { getHabitsByUsername } from '../../Api/habitApi';
 import "./Schedule.scss";
 import { createHabit } from '../../Api/habitApi.js';
 import HabitFormModal from '../HabitModal/HabitFormModal.jsx';
-
+import { deleteHabitById }from '../../Api/habitApi.js';
 
 const Schedule = () => {
   const [dailyHabits, setDailyHabits] = useState([]);
@@ -32,7 +32,7 @@ const Schedule = () => {
   const onActionComplete = async (args) => {
     if (args.requestType === 'eventCreated') {
       for (let ev of args.addedRecords) {
-        // transform scheduler event to your HabitDto
+        // transform scheduler event to  HabitDto
         const start = new Date(ev.StartTime);
         const end = new Date(ev.EndTime);
         const duration = (end - start) / (1000 * 60); // minutes
@@ -47,7 +47,20 @@ const Schedule = () => {
         await createHabit(habitDto); // POST to backend
       }
     }
+    // Handle deleted events for both local and backend
+    if (args.requestType === 'eventRemoved') {
+      const deletedEvents = Array.isArray(args.deletedRecords) ? args.deletedRecords : [args.data]; //check to see if there are multiple deleted records(an array) if not use the single record
+      for (let ev of deletedEvents) {
+        try {
+          await deleteHabitById(ev.Id); // DELETE from backend
+          setDailyHabits((prev) => prev.filter(habit => habit.Id !== ev.Id)); // Update local state
+        } catch (error) {
+          console.error('Failed to delete habit', error);
+        }
+      }
+    }
   };
+
   const handleHabitSubmit = async (newHabitData) => {
     try {
       // Parse time into dates
