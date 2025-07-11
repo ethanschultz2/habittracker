@@ -1,5 +1,9 @@
 package com.ethan.habittracker.habittracker.dtos;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.Set;
+
 public class HabitDto {
     private Long id;
     private String name;
@@ -7,20 +11,35 @@ public class HabitDto {
     private int frequency;
     private String duration;
     private String username;
+    private LocalTime startTime;
+    private Set<DayOfWeek> scheduledDays;
 
     public HabitDto(){
 
     }
 
-    public HabitDto(Long id, String name, String description, int frequency, String duration, String username) {
+    public HabitDto(Long id, String name, String description, int frequency, String duration, String username, LocalTime startTime, Set<DayOfWeek> scheduledDays) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.frequency = frequency;
         this.duration = duration;
+        this.startTime = startTime;
+        this.scheduledDays = scheduledDays;
         this.username = username;
     }
-
+    public Set<DayOfWeek> getScheduledDays() {
+        return scheduledDays;
+    }
+    public void setScheduledDays(Set<DayOfWeek> scheduledDays) {
+        this.scheduledDays = scheduledDays;
+    }
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
     public Long getId() {
         return id;
     }

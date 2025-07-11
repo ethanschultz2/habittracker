@@ -2,66 +2,89 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; // full viewport height
+    height: 100vh;
     background-color: #f0ffff;
 }
+.header {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  text-align: center;
+  align-self: center;
+  width: 100%;
+  font-size: 2em;
+  font-weight: 900;
+  color: #1c2841;
+  padding: 0; /* Remove padding that offsets it */
+}
+
 .habit-form-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    padding: 40px;
-    background-color: #f0ffff;
-    border-radius: 10px;
-    height: 50vh;
-    max-width: 600px;
-    margin: auto;
-    margin-top: 50px;
-    color: #1c2841;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  display: grid;
+  gap: 1.5rem;
+  width: 100%;
+  max-height: 90vh;
+  max-width: 800px; 
 }
-.habit-form-wrapper input{
+.habit-form-wrapper input:not([type="checkbox"]){
+    box-sizing: border-box;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     color:#1c2841;
+    flex: 1;                   /* Stretch to fill remaining space */
+    height: 40px;            
+    padding: 20px 120px;; 
+    font-size: 1.2rem;           
+    border-radius: 8px;
+    min-width: 0;
+    width: 100%;
 }
 .habit-form-wrapper label{
+    margin-top:20px;
     color:#1c2841;
-    font-weight: 700;
-    font-size: 1.8em;
-    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;;
+    width: 150px;
+    white-space: nowrap;
+    font-size: 1.2rem; 
 }
-input{
-    margin-top: 10px;
-    width: 100%;
-    color: #1c2841;
-    outline: none;
-    font-size: 1.2em;
-    padding: 0 30px;
-    line-height: 80px;
-    border-radius: 10px;
-    border: 2px solid #bce0fd;
-    background: transparent;
-    transition: 0.1 ease;
-    z-index: 1111;
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
 }
+    
 .habit,
 .duration,
 .frequency,
-.description{
-    position: relative;
+.description,
+.startTime{
+  display: flex;
+  flex-direction: row;
+  gap: 8rem;              
+}
+.scheduledDays {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  gap: 1rem;
+}
+.checkbox-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;       
+  gap: 0.5rem;     
+  align-items: flex-start;
+}
+.checkbox-group label{
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-input:focus {
-    border-color: #66ff00;
-    background-color: rgba(255, 255, 255, 0.05);
-    outline: none;
-    color: #66ff00;
+    flex-direction: row;
+    align-items: center;
 }
 
 
-label {
-  font-size: 1em;
-  color: #1c2841;
-}
 .button{
     color: white;
     border: 2px solid white;
@@ -74,4 +97,10 @@ label {
 }
 .button:hover{
      filter: brightness(80%);
+}
+
+@media (width > 720px) {
+    .habit-form-wrapper {
+        grid-template-columns: 1fr 1fr;
+    }
 }

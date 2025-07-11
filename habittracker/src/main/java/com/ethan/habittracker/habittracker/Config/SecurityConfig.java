@@ -53,9 +53,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true); // Allow credentials (like cookies, authorization headers)
+        configuration.setAllowCredentials(true); 
         
-        // Expose necessary headers
         configuration.addExposedHeader("Access-Control-Allow-Origin");
         configuration.addExposedHeader("Access-Control-Allow-Credentials");
         configuration.addExposedHeader("Access-Control-Allow-Methods");

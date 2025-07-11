@@ -20,14 +20,6 @@
         min-width: 33rem;
         text-align: center;
     }
-    .checkbox-group{
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 0px;
-        padding: 0px;
-    }
     .container {
         min-height: 15vh;
         margin-top: 10px;
@@ -36,20 +28,32 @@
         flex-wrap: wrap;
         justify-content: center;
     }
-
-    table, th, td{
-        min-width: 15vw;
-        border: 3px solid #bce0fd;
-        border-radius: 2px;
-        font-weight: 700;
-        font-size: 1.2em;
+    .habit-table{
+        border-collapse: collapse;
+        font-size: 1.0em;
+        min-width: 400px;
+        border-radius: 7px;;
+        border: 5px 5px 0 0;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
+     .habit-table thead tr{
+        background-color: #d0e5f7;
         color: #1c2841;
+        text-align: left;
+        font-weight: bold;
     }
-    td:hover{
-        filter: brightness(90%);
+    .habit-table th, .habit-table td{
+        padding: 15px 12px;
+        color: #1c2841;
+        text-align: center;
+        font-weight: bold;
     }
-    th:hover{
-        filter: brightness(90%);
+    .habit-table tbody tr{
+        border-bottom: 2px solid  #1c2841;
+    }
+    .habit-table tbody tr:nth-child(even){
+        background-color: #ebf1f3;
     }
     .clicker{
             border-radius: 2px;
@@ -62,7 +66,7 @@
     .checkbox-group {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 1px;
     max-width: 100px;
@@ -72,9 +76,15 @@
     label {
       font-weight: 700;
       font-size: 1.0em;
+      gap: 5px;
       align-items: center;
       justify-content: center;
       color: #1c2841;
     }
+    input[type="radio"] {
+    appearance: auto; 
+    width: 16px;
+    height: 16px;
+  }
   }
 }

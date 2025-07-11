@@ -49,8 +49,10 @@ public class HabitController {
             habit.getDescription(), 
             habit.getFrequency(), 
             habit.getDuration(),
-            habit.getUser().getUsername()))
-            .toList();
+            habit.getUser().getUsername(),
+            habit.getStartTime(),
+            habit.getScheduledDays())
+        ).toList();
     }
  
     //toDO Retrieving a specific habit by ID.
@@ -74,6 +76,8 @@ public class HabitController {
             habit.setFrequency(habitDto.getFrequency());
             habit.setDuration(habitDto.getDuration());
             habit.setUser(user);
+            habit.setStartTime(habitDto.getStartTime());
+            habit.setScheduledDays(habitDto.getScheduledDays());
 
         Habit savedHabit = habitRepository.save(habit);
 
@@ -83,7 +87,9 @@ public class HabitController {
             savedHabit.getDescription(), 
             savedHabit.getFrequency(), 
             savedHabit.getDuration(), 
-            user.getUsername());
+            user.getUsername(),
+            savedHabit.getStartTime(),
+            savedHabit.getScheduledDays());
 
         System.out.println("Returning response: " + responsDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responsDto);

@@ -1,10 +1,18 @@
 package com.ethan.habittracker.habittracker.Entities;
 
 
+import java.time.DayOfWeek;
 import java.time.Duration;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +27,8 @@ public class Habit {
     private String name;
     private String description;
     private int frequency;
-
+    private LocalTime startTime;
+    
     @Column(name = "duration")
     private String duration;
 
@@ -27,15 +36,35 @@ public class Habit {
     @JoinColumn(name = "username", referencedColumnName = "username")
     private User user;
 
+    @ElementCollection
+    @CollectionTable(name = "habit_scheduled_days", joinColumns = @JoinColumn(name = "habit_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "day_of_week")
+    private Set<DayOfWeek> scheduledDays = new HashSet<>();
+
     public Habit(){
 
     }
-    public Habit(Long id, String name, String description, int frequency, String duration){
+    public Habit(Long id, String name, String description, int frequency, String duration, LocalTime startTime, Set<DayOfWeek> scheduledDays) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.frequency = frequency;
         this.duration = duration;
+        this.startTime = startTime;
+        this.scheduledDays = scheduledDays;
+    }
+    public Set<DayOfWeek> getScheduledDays() {
+        return scheduledDays;
+    }
+    public void setScheduledDays(Set<DayOfWeek> scheduledDays) {
+        this.scheduledDays = scheduledDays;
+    }
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
     public Long getId() {
         return id;

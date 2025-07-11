@@ -41,7 +41,7 @@ const HabitList = () =>{
                 <tr key={habit.id} className='items'>
                     <td>{habit.description}</td>
                     <td>{habit.duration}</td>
-                    <td>{habit.frequency}</td>
+                    <td>{habit.scheduledDays.join(", ")}</td>
                     <td>{habit.name}</td>
                     <td>
                         <div className='checkbox-group'>
@@ -53,7 +53,7 @@ const HabitList = () =>{
                                 checked={radioStatus[habit.id] === 'completed'}
                                 onChange={() => handleStatusChange(habit.id,'completed')}
                                 />
-                                Completed
+                                Complete
                             </label>
                             <label>
                                 <input
@@ -63,7 +63,7 @@ const HabitList = () =>{
                                 checked={radioStatus[habit.id] === 'in-progress'}
                                 onChange={() => handleStatusChange(habit.id, 'in-progress')}
                                 />
-                                In Progress
+                                Active
                             </label>
                             <label>
                                 <input
@@ -73,7 +73,7 @@ const HabitList = () =>{
                                 checked={radioStatus[habit.id] === 'not-started'}
                                 onChange={() => handleStatusChange(habit.id, 'not-started')}
                                 />
-                                Not Started
+                                Unbegun
                             </label>
                         </div>
                     </td>
@@ -89,12 +89,12 @@ const HabitList = () =>{
                 <h2>Your Habits</h2>
                 {habits.length > 0 &&(
                 <div className='container'>
-                    <table>
+                    <table className='habit-table'>
                         <thead>
                             <tr>
                                 <th> Description </th>
-                                <th>Time spent doing </th>
-                                <th> Times a week </th>
+                                <th> Time for habit </th>
+                                <th> Days of the week </th>
                                 <th> Habit Name </th>
                                 <th> Status </th>
                                 <th> Delete Habit</th>

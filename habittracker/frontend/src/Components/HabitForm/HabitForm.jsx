@@ -3,21 +3,45 @@ import React from 'react';
 import './HabitForm.scss';
 import { createHabit } from '../../Api/habitApi.js';
 
+const DAYS_OF_WEEK = [
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY",
+  "SUNDAY"
+];
+
 const HabitForm = () =>{
     const [habits, setHabits] = useState({
         description: '',
         duration: '',
         frequency: '',
         name: '',
-        username: localStorage.getItem("username") || ''
+        username: localStorage.getItem("username") || '',
+        scheduledDays: [],
+        startTime: ''
     }); //Habits start as object
 
-    function handleChange(e){
-        const { name, value } = e.target;
-        setHabits(prev => ({...prev,
-            [name]:value
-        }));
+    function handleInputChange(e) {
+    const { name, value } = e.target;
+    setHabits(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  }
+    function handleDay(day) {
+        setHabits(prev => {
+        const alreadySelected = prev.scheduledDays.includes(day);
+        const updatedDays = alreadySelected
+            ? prev.scheduledDays.filter(d => d !== day)
+            : [...prev.scheduledDays, day];
+        return { ...prev, scheduledDays: updatedDays };
+        });
     }
+
+
     async function handleSubmit(e){
         e.preventDefault();
         try{
@@ -29,7 +53,9 @@ const HabitForm = () =>{
                 duration: '',
                 frequency: '',
                 name: '',
-                username: localStorage.getItem("username") || ''
+                username: localStorage.getItem("username") || '',
+                scheduledDays: [],
+                startTime: ''
             });
             alert("habit created successfully");
         }catch(err){
@@ -40,27 +66,40 @@ const HabitForm = () =>{
     return(
     <div className='wrapper'>
         <div className='habit-form-wrapper'>
-            <form onSubmit={handleSubmit}>
+            <form className="form-group" onSubmit={handleSubmit}>
+                <h2 className='header'>Fill Out Habit Form</h2>
                 <div className='habit'>
-                        <label htmlFor="name">What habit do you want to start </label>
+                        <label htmlFor="name">Habit Name </label>
                         <input 
                         type="text" 
                         name='name' 
                         id='name'
                         value={habits.name}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         required
                         />
                     </div>
 
                     <div className='duration'>
-                        <label htmlFor="duration">How long would you like to do it for </label>
+                        <label htmlFor="duration">For How Long </label>
                         <input 
                         type="text" 
                         name='duration' 
                         id='duration'
                         value={habits.duration}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
+                        required
+                        />
+                    </div>
+
+                    <div className='startTime'>
+                        <label htmlFor="startTime">Starting Time </label>
+                        <input 
+                        type="time" 
+                        name='startTime' 
+                        id='startTime'
+                        value={habits.startTime}
+                        onChange={handleInputChange}
                         required
                         />
                     </div>
@@ -72,9 +111,24 @@ const HabitForm = () =>{
                         name='frequency' 
                         id='frequency'
                         value={habits.frequency}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         required
                         />
+                    </div>
+                   <div className='scheduledDays'>
+                        <div className='checkbox-group'>
+                        {DAYS_OF_WEEK.map((day) => (
+                            <label key={day}>
+                            <input
+                                type="checkbox"
+                                value={day}
+                                checked={habits.scheduledDays.includes(day)}
+                                onChange={() => handleDay(day)}
+                            />
+                            {day.charAt(0) + day.slice(1).toLowerCase()}
+                            </label>
+                        ))}
+                        </div>
                     </div>
                     <div className='description'>
                         <label htmlFor="description">Description of Habit </label>
@@ -83,7 +137,7 @@ const HabitForm = () =>{
                         name='description' 
                         id='description'
                         value={habits.description}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         />
                     </div>
                     <button type='submit' className='button'>
