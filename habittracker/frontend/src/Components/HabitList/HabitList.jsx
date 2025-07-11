@@ -1,23 +1,30 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { getHabitsByUsername, deleteHabitById } from '../../Api/habitApi.js';
+import { getHabitsByUsername, deleteHabitById, updateStatus } from '../../Api/habitApi.js';
 import './HabitList.scss';
 const HabitList = () =>{
     const [habits, setHabits] = useState([]);
     const [radioStatus, setRadioStatus] = useState({});
 
         useEffect(() => {
-                const fetchHabits = async () =>{
-                try{
-                    const usersName = localStorage.getItem("username");
-                    const res = await getHabitsByUsername(usersName);
-                    setHabits(res);
+            fetchHabits();
+        }, []);
+        const fetchHabits = async () =>{
+            try{
+                const usersName = localStorage.getItem("username");
+                const res = await getHabitsByUsername(usersName);
+                setHabits(res);
+                const initialStatus = {};
+                res.forEach((habit) => {
+                    // Initialize radioStatus with the habit's status or default to 'not-started'
+                    initialStatus[habit.id] = habit.status || 'not-started'; // Default to 'not-started' if no status
+                });
+                    setRadioStatus(initialStatus);
                 }catch(error){
                     console.log(error);
                 }
             };
-                fetchHabits();
-            }, []);
+
 
         const handleDelete = async (id) => {
             try{
@@ -27,15 +34,19 @@ const HabitList = () =>{
                 console.log("Failed to delete", error);
             }
         };
-        const handleStatusChange = (id, status) => {
-            setRadioStatus((prev) => ({ ...prev, [id]: status }));
+        const handleStatusChange = async (id, status) => {
+            try{
+                await updateStatus(id, status);
+                setRadioStatus((prev) => ({ ...prev, [id]: status }));
 
-            if(status === 'completed'){
-                // Handle completed status if complete delete from backend 
-                handleDelete(id);
+                if(status === 'completed'){
+                    // Handle completed status if complete delete from backend 
+                    await handleDelete(id);
+                }
+            } catch(error) {
+                console.log("Failed to update status", error);
             }
         };
-
         const tableRows = habits.map((habit) => {
             return(
                 <tr key={habit.id} className='items'>

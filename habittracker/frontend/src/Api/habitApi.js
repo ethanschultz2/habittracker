@@ -1,6 +1,27 @@
 
 const BASE_URL = "http://localhost:8080/api";
 
+export async function updateStatus(id, status) {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${BASE_URL}/habit/update/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ status })
+    });
+    if (!res.ok) throw new Error("Failed to update status");
+    
+    // Check if response has content (for non-completed status updates)
+    const contentType = res.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+        return res.json();
+    } else {
+        return null;
+    }
+}
+
 //getting habits by username
 export async function getHabitsByUsername(username){
     const token = localStorage.getItem("token");
@@ -10,7 +31,9 @@ export async function getHabitsByUsername(username){
         }
     });
     if(!res.ok) throw new Error("Failed to fetch habits");
-    return res.json();
+    const data = await res.json();
+    console.log("Fetched habits:", data);
+    return data;
 }
 //deleting habit by habit id
 export async function deleteHabitById(id){

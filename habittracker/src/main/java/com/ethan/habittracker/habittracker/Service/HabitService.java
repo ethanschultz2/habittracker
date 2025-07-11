@@ -29,7 +29,8 @@ public class HabitService {
          habit.getDuration(),
          habit.getUser().getUsername(),
          habit.getStartTime(),
-         habit.getScheduledDays()))
+         habit.getScheduledDays(),
+         habit.getStatus()))
          .collect(Collectors.toList());
         return habitsDto;
     }
@@ -44,7 +45,8 @@ public class HabitService {
             habit.getDuration(),
             habit.getUser().getUsername(),
             habit.getStartTime(),
-            habit.getScheduledDays()));
+            habit.getScheduledDays(),
+            habit.getStatus()));
      }
      // Adding a new habit for a user.
      public Habit addHabit(Habit habit){
@@ -62,7 +64,9 @@ public class HabitService {
                 habitToUpdate.setDescription(updatedeHabit.getDescription());
                 habitToUpdate.setFrequency(updatedeHabit.getFrequency());
                 habitToUpdate.setDuration(updatedeHabit.getDuration());
-
+                habitToUpdate.setStartTime(updatedeHabit.getStartTime());
+                habitToUpdate.setScheduledDays(updatedeHabit.getScheduledDays());
+                habitToUpdate.setStatus(updatedeHabit.getStatus());
                 Habit savedHabit = habitRepository.save(habitToUpdate);
 
             return Optional.of(new HabitDto(
@@ -73,7 +77,8 @@ public class HabitService {
                savedHabit.getDuration(),
                savedHabit.getUser().getUsername(),
                savedHabit.getStartTime(),
-               savedHabit.getScheduledDays())) ;
+               savedHabit.getScheduledDays(),
+               savedHabit.getStatus()));
         }
         return Optional.empty();//if null return empty
      }

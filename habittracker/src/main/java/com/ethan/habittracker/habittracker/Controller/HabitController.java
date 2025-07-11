@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,11 +52,43 @@ public class HabitController {
             habit.getDuration(),
             habit.getUser().getUsername(),
             habit.getStartTime(),
-            habit.getScheduledDays())
+            habit.getScheduledDays(),
+            habit.getStatus())
         ).toList();
     }
  
-    //toDO Retrieving a specific habit by ID.
+    //updating habits status
+    @PutMapping("/update/{id}")
+    public ResponseEntity<HabitDto> updateHabitStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        Optional<Habit> optionalHabit = habitRepository.findById(id);
+
+        if (optionalHabit.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        String newStatus = body.get("status");
+        if (newStatus == null || newStatus.isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Habit habit = optionalHabit.get();
+        habit.setStatus(newStatus);
+        Habit updatedHabit = habitRepository.save(habit);
+
+        HabitDto responseDto = new HabitDto(
+            updatedHabit.getId(),
+            updatedHabit.getName(),
+            updatedHabit.getDescription(),
+            updatedHabit.getFrequency(),
+            updatedHabit.getDuration(),
+            updatedHabit.getUser().getUsername(),
+            updatedHabit.getStartTime(),
+            updatedHabit.getScheduledDays(),
+            updatedHabit.getStatus()
+        );
+        System.out.println("Updating habit ID " + id + " status to: " + newStatus);
+        return ResponseEntity.ok(responseDto);
+    }
 
     // Adding a new habit for a user.
     @PostMapping("/create")
@@ -78,6 +111,11 @@ public class HabitController {
             habit.setUser(user);
             habit.setStartTime(habitDto.getStartTime());
             habit.setScheduledDays(habitDto.getScheduledDays());
+            if (habitDto.getStatus() != null && !habitDto.getStatus().isBlank()) {
+                habit.setStatus(habitDto.getStatus());
+            } else {
+                habit.setStatus("not-started"); 
+            }
 
         Habit savedHabit = habitRepository.save(habit);
 
@@ -89,7 +127,8 @@ public class HabitController {
             savedHabit.getDuration(), 
             user.getUsername(),
             savedHabit.getStartTime(),
-            savedHabit.getScheduledDays());
+            savedHabit.getScheduledDays(),
+            savedHabit.getStatus());
 
         System.out.println("Returning response: " + responsDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responsDto);

@@ -28,6 +28,9 @@ public class Habit {
     private String description;
     private int frequency;
     private LocalTime startTime;
+
+    @Column(nullable = false)
+    private String status = "not-started"; // Default status
     
     @Column(name = "duration")
     private String duration;
@@ -45,7 +48,7 @@ public class Habit {
     public Habit(){
 
     }
-    public Habit(Long id, String name, String description, int frequency, String duration, LocalTime startTime, Set<DayOfWeek> scheduledDays) {
+    public Habit(Long id, String name, String description, int frequency, String duration, LocalTime startTime, Set<DayOfWeek> scheduledDays, String status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -53,6 +56,13 @@ public class Habit {
         this.duration = duration;
         this.startTime = startTime;
         this.scheduledDays = scheduledDays;
+        this.status = status;
+    }
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
     }
     public Set<DayOfWeek> getScheduledDays() {
         return scheduledDays;

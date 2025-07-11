@@ -21,7 +21,8 @@ const HabitForm = () =>{
         name: '',
         username: localStorage.getItem("username") || '',
         scheduledDays: [],
-        startTime: ''
+        startTime: '',
+        status: 'not-started' // Default status
     }); //Habits start as object
 
     function handleInputChange(e) {
@@ -55,7 +56,8 @@ const HabitForm = () =>{
                 name: '',
                 username: localStorage.getItem("username") || '',
                 scheduledDays: [],
-                startTime: ''
+                startTime: '',
+                status: 'not-started' // Default status
             });
             alert("habit created successfully");
         }catch(err){

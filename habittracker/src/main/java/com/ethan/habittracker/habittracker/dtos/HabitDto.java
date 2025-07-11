@@ -13,12 +13,13 @@ public class HabitDto {
     private String username;
     private LocalTime startTime;
     private Set<DayOfWeek> scheduledDays;
+    private String status;
 
     public HabitDto(){
 
     }
 
-    public HabitDto(Long id, String name, String description, int frequency, String duration, String username, LocalTime startTime, Set<DayOfWeek> scheduledDays) {
+    public HabitDto(Long id, String name, String description, int frequency, String duration, String username, LocalTime startTime, Set<DayOfWeek> scheduledDays, String status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -27,6 +28,13 @@ public class HabitDto {
         this.startTime = startTime;
         this.scheduledDays = scheduledDays;
         this.username = username;
+        this.status = status;
+    }
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
     }
     public Set<DayOfWeek> getScheduledDays() {
         return scheduledDays;
