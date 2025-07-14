@@ -3,57 +3,102 @@ import { useState, useEffect } from 'react';
 import { getHabitsByUsername } from '../../Api/habitApi';
 import "./Schedule.scss";
 import { createHabit } from '../../Api/habitApi.js';
-import HabitFormModal from '../HabitModal/HabitFormModal.jsx';
 import { deleteHabitById }from '../../Api/habitApi.js';
 
 const Schedule = () => {
   const [dailyHabits, setDailyHabits] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
   const username = localStorage.getItem('username') || '';
   getHabitsByUsername(username).then(habits => {
-    const formatted = habits.map((habit, idx) => {
-      const start = new Date();
-      start.setHours(17, 0, 0); // or whatever logic you want
-      const end = new Date(start.getTime() + parseInt(habit.duration, 10) * 60000);
-      return {
-        Id: habit.id,
-        Subject: habit.name,
-        StartTime: start,
-        EndTime: end,
-        IsAllDay: false,
-      };
+    const formatted = habits.flatMap(habit => {
+      const durationInMinutes = parseInt(habit.duration, 10) || 0;
+
+      // If startTime is "HH:mm", extract it
+      const [hours, minutes] = habit.startTime
+        ? habit.startTime.split(':').map(Number)
+        : [17, 0]; // Default 5:00 PM
+
+      return habit.scheduledDays.map(day => {
+        // Convert day name to the date of the next occurrence
+        const today = new Date();
+        const daysMap = {
+          SUNDAY: 0,
+          MONDAY: 1,
+          TUESDAY: 2,
+          WEDNESDAY: 3,
+          THURSDAY: 4,
+          FRIDAY: 5,
+          SATURDAY: 6
+        };
+
+        const targetDay = daysMap[day];
+        const currentDay = today.getDay();
+        const daysUntil = (targetDay - currentDay + 7) % 7;
+
+        const scheduledDate = new Date(today);
+        scheduledDate.setDate(today.getDate() + daysUntil);
+        scheduledDate.setHours(hours, minutes, 0, 0); // Set time
+
+        const start = new Date(scheduledDate);
+        const end = new Date(start.getTime() + durationInMinutes * 60000);
+
+        return {
+          Id: habit.id,
+          Subject: habit.name,
+          StartTime: start,
+          EndTime: end,
+          IsAllDay: false,
+        };
+      });
     });
     setDailyHabits(formatted);
   });
 }, []);
 
+
   const onActionComplete = async (args) => {
+    // Handle creating events
     if (args.requestType === 'eventCreated') {
       for (let ev of args.addedRecords) {
-        // transform scheduler event to  HabitDto
         const start = new Date(ev.StartTime);
         const end = new Date(ev.EndTime);
-        const duration = (end - start) / (1000 * 60); // minutes
+        const duration = (end - start) / (1000 * 60); // in minutes
+
+        // Format HH:mm for backend
+        const hh = String(start.getHours()).padStart(2, '0');
+        const mm = String(start.getMinutes()).padStart(2, '0');
+        const formattedTime = `${hh}:${mm}`;
+
+        // Get the scheduled day from the start date
+        const dayNames = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+        const scheduledDay = dayNames[start.getDay()];
 
         const habitDto = {
           name: ev.Subject,
-          description: ev.Description || '',
-          frequency: 1, // or some default value
+          description: ev.Description || ev.Subject,
+          frequency: 1, // default
           duration: duration,
           username: localStorage.getItem('username') || '',
+          scheduledDays: [scheduledDay], 
+          startTime: formattedTime,
+          status: 'not-started'
         };
-        await createHabit(habitDto); // POST to backend
+        try {
+          await createHabit(habitDto); // POST to backend
+        } catch (error) {
+          console.error('Failed to create habit', error);
+        }
       }
     }
-    // Handle deleted events for both local and backend
+    // Handle deleting events
     if (args.requestType === 'eventRemoved') {
-      const deletedEvents = Array.isArray(args.deletedRecords) ? args.deletedRecords : [args.data]; //check to see if there are multiple deleted records(an array) if not use the single record
+      const deletedEvents = Array.isArray(args.deletedRecords) ? args.deletedRecords : [args.data];
       for (let ev of deletedEvents) {
         try {
-          await deleteHabitById(ev.Id); // DELETE from backend
-          setDailyHabits((prev) => prev.filter(habit => habit.Id !== ev.Id)); // Update local state
+          console.log("Deleting habit with ID:", ev.Id);
+          await deleteHabitById(ev.Id);
+          setDailyHabits(prev => prev.filter(habit => habit.Id !== ev.Id));
         } catch (error) {
           console.error('Failed to delete habit', error);
         }
@@ -61,52 +106,9 @@ const Schedule = () => {
     }
   };
 
-  const handleHabitSubmit = async (newHabitData) => {
-    try {
-      // Parse time into dates
-      const [startHour, startMin] = newHabitData.startTime.split(':').map(Number);
-      const [endHour, endMin] = newHabitData.endTime.split(':').map(Number);
-      const start = new Date();
-      start.setHours(startHour, startMin, 0, 0);
-      const end = new Date();
-      end.setHours(endHour, endMin, 0, 0);
-      const durationMinutes = (end - start) / (1000 * 60);
-
-      const habitDto = {
-        description: newHabitData.description,
-        duration: durationMinutes,
-        frequency: newHabitData.frequency,
-        name: newHabitData.name,
-        username: localStorage.getItem('username') || '',
-      };
-      // Save to backend
-      await createHabit(habitDto);
-
-      // Also update local scheduler state
-      setDailyHabits((prev) => [
-        ...prev,
-        {
-          Id: prev.length + 1,
-          Subject: newHabitData.name,
-          StartTime: start,
-          EndTime: end,
-          IsAllDay: false,
-          Description: newHabitData.description,
-        }
-      ]);
-
-      setIsModalOpen(false); // close modal
-    } catch (error) {
-      console.error('Failed to add habit', error);
-    }
-  };
 
   return (
     <>
-      <div className='button-container'>
-        <button onClick={() => setIsModalOpen(true)} className="habit-btn">Add Habit</button>
-      </div>
-
       <ScheduleComponent
         height="750px"
         eventSettings={{ dataSource: dailyHabits }}
@@ -114,12 +116,6 @@ const Schedule = () => {
       >
         <Inject services={[Day, Week, WorkWeek, Month]} />
       </ScheduleComponent>
-
-      <HabitFormModal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleHabitSubmit}
-      />
     </>
   );
 };
