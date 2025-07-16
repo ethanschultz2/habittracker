@@ -13,10 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Make mvnw executable
+        run: chmod +x ./habittracker/mvnw
+
       - name: Run backend tests
-        run: |
-          cd habittracker
-          ./mvnw test
+        run: ./habittracker/mvnw test
 
       - name: Run frontend tests
         run: |
