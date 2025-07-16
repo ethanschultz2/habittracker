@@ -1,0 +1,32 @@
+
+services:
+  postgres:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: habituser
+      POSTGRES_PASSWORD: "${PASSWORD}"
+      POSTGRES_DB: habittracker
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/habittracker
+      SPRING_DATASOURCE_USERNAME: habituser
+      SPRING_DATASOURCE_PASSWORD: "${PASSWORD}"
+      JWT_SECRET: "${JWT_SECRET}"
+      JWT_EXPIRATION: "${JWT_EXPIRATION}"
+      HOST_MAIL: "${HOST_MAIL}"
+      MAIL_USERNAME: "${MAIL_USERNAME}"
+      MAIL_PASSWORD: "${MAIL_PASSWORD}"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
