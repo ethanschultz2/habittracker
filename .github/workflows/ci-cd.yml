@@ -24,10 +24,10 @@ jobs:
 
       - name: Build and push backend image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/habittracker-backend:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/habittracker-backend:latest ./habittracker
           docker push ${{ secrets.DOCKER_USERNAME }}/habittracker-backend:latest
 
       - name: Build and push frontend image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/habittracker-frontend:latest ./frontend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/habittracker-frontend:latest ./habittracker/frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/habittracker-frontend:latest
