@@ -17,11 +17,12 @@ jobs:
         run: chmod +x ./habittracker/mvnw
 
       - name: Run backend tests
-        run: ./habittracker/mvnw test
+        working-directory: ./habittracker
+        run: ./mvnw test
 
       - name: Run frontend tests
+        working-directory: ./habittracker/frontend
         run: |
-          cd habittracker/frontend
           npm install
           npm test -- --watchAll=false
 
