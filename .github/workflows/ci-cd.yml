@@ -19,15 +19,15 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push backend image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/habittracker-backend:latest ./backend
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/habittracker-backend:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/habittracker-backend:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/habittracker-backend:latest
 
       - name: Build and push frontend image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/habittracker-frontend:latest ./frontend
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/habittracker-frontend:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/habittracker-frontend:latest ./frontend
+          docker push ${{ secrets.DOCKER_USERNAMEE }}/habittracker-frontend:latest
